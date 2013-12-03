@@ -1,3 +1,6 @@
+require "bundler/gem_tasks"
+
+=begin
 require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/testtask'
@@ -28,3 +31,4 @@ Rake::TestTask.new do |t|
 end
 
 task :default => :test
+=end
