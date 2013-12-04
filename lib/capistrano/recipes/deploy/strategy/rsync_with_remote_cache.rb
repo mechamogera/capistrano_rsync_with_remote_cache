@@ -44,7 +44,9 @@ module Capistrano
         end
         
         def rsync_command_for(server)
-          "rsync #{rsync_options} --rsh='ssh -p #{ssh_port(server)}' #{local_cache_path}/ #{rsync_host(server)}:#{repository_cache_path}/"
+          ssh_options_str = "-p #{ssh_port(server)} "
+          ssh_options_str << ssh_options[:keys].inject("") { |x, key| x += "-i #{key} "; x } if ssh_options[:keys]
+          "rsync #{rsync_options} --rsh='ssh #{ssh_options_str} #{rsync_ssh_options}' #{local_cache_path}/ #{rsync_host(server)}:#{repository_cache_path}/"
         end
         
         def mark_local_cache
