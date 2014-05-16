@@ -22,6 +22,7 @@ module Capistrano
         default_attribute :rsync_options, '-az --delete'
         default_attribute :local_cache, '.rsync_cache'
         default_attribute :repository_cache, 'cached-copy'
+        default_attribute :rsync_ssh_options, '-o PasswordAuthentication=no -o StrictHostKeyChecking=no'
 
         def deploy!
           update_local_cache
