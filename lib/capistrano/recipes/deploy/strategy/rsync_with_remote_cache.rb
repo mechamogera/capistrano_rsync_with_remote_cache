@@ -7,6 +7,7 @@ module Capistrano
       class RsyncWithRemoteCache < Remote
         
         class InvalidCacheError < Exception; end
+        class RsyncFailedError < Exception; end
 
         def self.default_attribute(attribute, default_value)
           define_method(attribute) { configuration[attribute] || default_value }
@@ -37,7 +38,8 @@ module Capistrano
         
         def update_remote_cache
           finder_options = {:except => { :no_release => true }}
-          find_servers(finder_options).each {|s| system(rsync_command_for(s)) }
+          rsync_success = find_servers(finder_options).all? {|s| system(rsync_command_for(s)) }
+          raise RsyncFailedError unless rsync_success
         end
         
         def copy_remote_cache
