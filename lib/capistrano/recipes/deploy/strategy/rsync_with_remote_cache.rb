@@ -8,6 +8,7 @@ module Capistrano
         
         class InvalidCacheError < Exception; end
         class RsyncFailedError < Exception; end
+        class LocalCacheUpdateFailedError < Exception; end
 
         def self.default_attribute(attribute, default_value)
           define_method(attribute) { configuration[attribute] || default_value }
@@ -32,7 +33,7 @@ module Capistrano
         end
         
         def update_local_cache
-          system(command)
+          raise LocalCacheUpdateFailedError unless system(command)
           mark_local_cache
         end
         
